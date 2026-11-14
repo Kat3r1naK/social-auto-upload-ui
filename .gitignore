@@ -181,6 +181,8 @@ cookies
 dist/
 node_modules/
 package-lock.json
+!sau_frontend/package-lock.json
+!/package-lock.json
 !utils/article_renderer/package-lock.json
 
 # database
@@ -195,3 +197,8 @@ videoFile
 
 # 本地个人使用的浏览器自动化开发 Skill，不随开源仓库发布
 /skills/browser-automation-dev/
+
+# Desktop build outputs and bundled runtime
+/desktop-dist/
+/release/
+/desktop/runtime/

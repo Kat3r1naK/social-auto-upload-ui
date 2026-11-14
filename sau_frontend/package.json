@@ -6,20 +6,29 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit",
+    "test": "node --test tests/*.test.mjs",
+    "format": "prettier --write src vite.config.ts tsconfig.json index.html",
     "preview": "vite preview"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "axios": "^1.9.0",
+    "dompurify": "^3.4.17",
     "element-plus": "^2.9.11",
+    "marked": "^18.2.0",
     "pinia": "^3.0.2",
     "sass": "^1.89.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@types/node": "^26.6.6",
     "@vitejs/plugin-vue": "^5.2.3",
-    "vite": "^6.3.5"
+    "prettier": "^3.10.1",
+    "typescript": "^6.0.3",
+    "vite": "^6.3.5",
+    "vue-tsc": "^3.3.14"
   }
 }

@@ -33,7 +33,7 @@ def load_article(content_file: str | Path, theme: str | None = None) -> ArticleD
         theme = theme or "default"
         if theme not in ARTICLE_THEMES:
             raise ValueError(f"主题必须为: {', '.join(ARTICLE_THEMES)}")
-        node = shutil.which("node")
+        node = os.environ.get("SAU_ARTICLE_NODE") or shutil.which("node")
         if not node or not (ARTICLE_RENDERER_DIR / "node_modules/baoyu-md").is_dir():
             raise RuntimeError("Markdown 渲染需要 Node.js 22+ 及依赖；请执行 sau article setup")
         completed = subprocess.run(

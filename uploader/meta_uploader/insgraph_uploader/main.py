@@ -41,7 +41,7 @@ def _proxy_options(proxy: str | None) -> dict[str, str] | None:
 
 async def _open_instagram_page(playwright: Playwright, account_file: Path, *, proxy: str | None, headless: bool):
     """使用工程 Chrome 和指定存储状态，导航失败保留原异常。"""
-    browser = await playwright.chromium.launch(channel="chrome", headless=headless, proxy=_proxy_options(proxy))
+    browser = await playwright.chromium.launch(executable_path=os.environ.get("SAU_CHROME_PATH") or None, channel="chrome", headless=headless, proxy=_proxy_options(proxy))
     try:
         context = await browser.new_context(storage_state=str(account_file))
         page = await context.new_page()
@@ -108,7 +108,7 @@ async def instagram_setup(account_file: str | Path, *, handle: bool = False, pro
         result = {"success": False, "status": "cookie_invalid", "account_file": str(account_file)}
         return result if return_detail else False
     async with async_playwright() as p:
-        browser = await p.chromium.launch(channel="chrome", headless=headless, proxy=_proxy_options(proxy), args=["--start-maximized"])
+        browser = await p.chromium.launch(executable_path=os.environ.get("SAU_CHROME_PATH") or None, channel="chrome", headless=headless, proxy=_proxy_options(proxy), args=["--start-maximized"])
         candidate = account_file.with_name(f'{account_file.stem}.{uuid4().hex}.pending.json')
         try:
             context = await browser.new_context(no_viewport=not headless)

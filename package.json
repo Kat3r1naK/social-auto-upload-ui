@@ -1,0 +1,86 @@
+{
+  "name": "sau-studio",
+  "version": "0.1.4",
+  "private": true,
+  "description": "SAU Studio Windows desktop client",
+  "author": "SAU Studio contributors",
+  "license": "MIT",
+  "main": "desktop-dist/desktop/main.js",
+  "scripts": {
+    "build:desktop": "tsc -p desktop/tsconfig.json",
+    "build": "npm --prefix sau_frontend run build && npm run build:desktop",
+    "desktop": "npm run build && electron .",
+    "desktop:open": "electron .",
+    "prepare:runtime": "npm run build:desktop && node desktop-dist/desktop/scripts/prepare-runtime.js",
+    "check:electron": "node desktop-dist/desktop/scripts/check-electron.js",
+    "check:bundle": "node desktop-dist/desktop/scripts/check-bundle.js",
+    "test": "npm --prefix sau_frontend run test && npm run build:desktop && node --test desktop-dist/desktop/tests/*.test.js",
+    "pack": "npm run build && electron-builder --dir",
+    "dist:win": "npm run build && electron-builder --win nsis --x64"
+  },
+  "dependencies": {
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "electron": "45.3.1",
+    "electron-builder": "26.18.0",
+    "typescript": "~6.0.3"
+  },
+  "build": {
+    "electronLanguages": ["zh-CN", "en-US"],
+    "appId": "com.sau.studio",
+    "productName": "SAU Studio",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "desktop-dist/**/*",
+      "!desktop-dist/desktop/tests{,/**/*}",
+      "!desktop-dist/desktop/scripts{,/**/*}",
+      "sau_frontend/dist/**/*",
+      "LICENSE",
+      "sau_frontend/THIRD_PARTY_NOTICES.md",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "desktop/runtime/worker",
+        "to": "worker",
+        "filter": [
+          "**/*",
+          "!_internal/patchright/driver/node.exe",
+          "!_internal/playwright/driver/node.exe"
+        ]
+      },
+      {
+        "from": "desktop/runtime/browsers",
+        "to": "browsers",
+        "filter": [
+          "**/*",
+          "!chromium_headless_shell-*/**/*",
+          "!.links/**/*"
+        ]
+      },
+      {
+        "from": "desktop/runtime/tools",
+        "to": "tools",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "sau_frontend/public/assets/sau-mark.ico",
+      "signExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "createDesktopShortcut": true
+    }
+  }
+}

@@ -50,6 +50,7 @@ async def _is_logged_out(page: Page) -> bool:
 async def _open_facebook_page(playwright: Playwright, account_file: Path, *, proxy: str | None, headless: bool):
     """使用 storage state 打开 Facebook，并保留代理配置到浏览器进程。"""
     launch_options = {
+        "executable_path": os.environ.get("SAU_CHROME_PATH") or None,
         "channel": "chrome",
         "headless": headless,
         "proxy": _proxy_options(proxy),
@@ -115,7 +116,7 @@ async def facebook_setup(
 
     async with async_playwright() as playwright:
         browser = await playwright.chromium.launch(
-            channel="chrome", headless=headless, proxy=_proxy_options(proxy)
+            executable_path=os.environ.get("SAU_CHROME_PATH") or None, channel="chrome", headless=headless, proxy=_proxy_options(proxy)
         )
         try:
             context = await browser.new_context(

@@ -42,7 +42,7 @@ async def _open_business_page(
     headless: bool,
 ):
     browser = await playwright.chromium.launch(
-        channel="chrome", headless=headless, proxy=_proxy_options(proxy)
+        executable_path=os.environ.get("SAU_CHROME_PATH") or None, channel="chrome", headless=headless, proxy=_proxy_options(proxy)
     )
     try:
         context = await browser.new_context(storage_state=str(account_file))
@@ -111,7 +111,7 @@ async def meta_setup(
 
     async with async_playwright() as playwright:
         browser = await playwright.chromium.launch(
-            channel="chrome", headless=headless, proxy=_proxy_options(proxy)
+            executable_path=os.environ.get("SAU_CHROME_PATH") or None, channel="chrome", headless=headless, proxy=_proxy_options(proxy)
         )
         try:
             # 已有 Facebook 登录态可作为 Business Suite 的初始 Cookie，避免重复登录。

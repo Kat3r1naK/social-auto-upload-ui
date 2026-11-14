@@ -22,6 +22,11 @@ dependencies = [
 sau = "sau_cli:main"
 
 [project.optional-dependencies]
+desktop = [
+  "playwright>=1.58,<2",
+  "pyinstaller>=6,<7",
+  "pillow>=11,<13",
+]
 web = [
   "Flask[async]==3.1.1",
   "flask-cors==6.0.0",
